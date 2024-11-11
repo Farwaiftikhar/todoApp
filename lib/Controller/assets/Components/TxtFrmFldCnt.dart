@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 
 class FormContainer extends StatelessWidget {
   Color hintColor;
-  Color fielColor;
+  //Color fieldColor;
   String text;
  TextEditingController controller;
 
    FormContainer({super.key,
 
      required this.hintColor,
-     required this.fielColor,
+     //required this.fieldColor,
      required this.text,
      required this.controller,
    });
@@ -26,7 +26,7 @@ class FormContainer extends StatelessWidget {
     height:40 ,
     width:340,
     decoration: BoxDecoration(
-    color:fielColor,
+    color:AppColors.whiteColor,
     borderRadius: BorderRadius.circular(15)
     ),
     child: TextFormField(

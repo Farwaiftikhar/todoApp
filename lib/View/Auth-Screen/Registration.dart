@@ -1,4 +1,5 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:first_project/Controller/Contstants/Container-Color/Color.dart';
 import 'package:first_project/Controller/assets/Components/App-Button.dart';
 import 'package:first_project/Controller/assets/Components/App-Container.dart';
@@ -15,16 +16,38 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-    TextEditingController _nameController = TextEditingController();
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _passwordController = TextEditingController();
-     TextEditingController _confirmController = TextEditingController();
+  // TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  //TextEditingController _confirmController = TextEditingController();
+
+  bool isLoading = false;
+  Future<void> registration() async {
+    isLoading = true;
+    setState(() {});
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim())
+        .then((value) {
+      // Successfull Snackbar
+      print('Account Created Sucessfully');
+
+      isLoading = false;
+      setState(() {});
+      Navigator.push(context, CupertinoPageRoute(builder: (contex) => Login()));
+    }).onError((error, value) {
+      isLoading = false;
+      setState(() {});
+      print('Error : $error');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-
           Container(
             height: 100,
             width: 180,
@@ -33,8 +56,8 @@ class _RegistrationState extends State<Registration> {
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(90),
                   bottomLeft: Radius.circular(80),
-                )
-            ),),
+                )),
+          ),
           Container(
             height: 180,
             width: 100,
@@ -43,91 +66,128 @@ class _RegistrationState extends State<Registration> {
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(80),
                   bottomRight: Radius.circular(90),
-                )
-            ),),
+                )),
+          ),
           SingleChildScrollView(
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 90,top: 183),
+                  padding: EdgeInsets.only(left: 90, top: 183),
                   height: 220,
                   width: 400,
-                  child: Text('Welcome Onboard!',style: TextStyle(color:(AppColors.blackColor),fontWeight: FontWeight.bold,fontSize: 25),),
+                  child: Text(
+                    'Welcome Onboard!',
+                    style: TextStyle(
+                        color: (AppColors.blackColor),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25),
+                  ),
                 ),
-            
-            
                 Container(
-                  padding: EdgeInsets.only(left: 20,top: 10),
+                  padding: EdgeInsets.only(left: 20, top: 10),
                   height: 100,
                   width: 400,
-                  child: Text(' Let help you in completing your tasks',style: TextStyle(color:(AppColors.blackColor) ,fontWeight: FontWeight.bold,fontSize: 18),),
+                  child: Text(
+                    ' Let help you in completing your tasks',
+                    style: TextStyle(
+                        color: (AppColors.blackColor),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
                 ),
-            
-                Padding(  padding: EdgeInsets.only(left: 30,right: 30),
+                Padding(
+                  padding: EdgeInsets.only(left: 30, right: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     AppContainer(text: 'Full Name', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                     FormContainer(hintColor:AppColors.hinttext, fielColor: AppColors.whiteColor, text:'Mary Elliot', controller: _nameController,),
-            
-                      SizedBox(height: 10,),
-            
-                      AppContainer(text: 'Email', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                      FormContainer(hintColor:AppColors.hinttext, fielColor: AppColors.whiteColor, text:'mary.elliot@mail.com', controller: _emailController,),
-            
-                      SizedBox(height: 10,),
-            
-                      AppContainer(text: 'Password', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                      FormContainer(hintColor:AppColors.hinttext, fielColor: AppColors.whiteColor, text:'**************', controller: _passwordController,),
-            
-                      SizedBox(height: 10,),
-            
-                      AppContainer(text: 'Confirm Password', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                      FormContainer(hintColor:AppColors.hinttext, fielColor: AppColors.whiteColor, text:'**************', controller: _confirmController, ),
-            
-                      SizedBox(height: 5,),
-            
-                      InkWell(
-                       onTap: ()
-                        //async
-                           {
+                      // AppContainer(text: 'Full Name', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
+                      // FormContainer(hintColor:AppColors.hinttext, fieldColor: AppColors.whiteColor, text:'Mary Elliot', controller: _nameController,),
 
-                          //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Login()));
-                        },
-                        child:
-                        AppButton
-                          (text: 'Register',
-                            fontWeight: FontWeight.bold,
-                            size: 15),
+                      SizedBox(
+                        height: 10,
                       ),
-                      SizedBox(height: 5,),
+
+                      AppContainer(
+                          text: 'Email',
+                          weight: FontWeight.bold,
+                          size: 15,
+                          textColor: AppColors.blackColor),
+                   FormContainer(
+                       hintColor: AppColors.hinttext,
+                       text: 'mary.elliot@mail.com',
+                       controller: _emailController),
+
+                      SizedBox(
+                        height: 10,
+                      ),
+
+                      AppContainer(
+                          text: 'Password',
+                          weight: FontWeight.bold,
+                          size: 15,
+                          textColor: AppColors.blackColor),
+                      FormContainer(
+                        hintColor: AppColors.hinttext,
+                        text: '**************',
+                        controller: _passwordController,
+                      ),
+
+                      // SizedBox(height: 10,),
+
+                      //AppContainer(text: 'Confirm Password', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
+                      //FormContainer(hintColor:AppColors.hinttext, fieldColor: AppColors.whiteColor, text:'**************', controller: _confirmController, ),
+
+                      SizedBox(
+                        height: 5,
+                      ),
+
+                      isLoading
+                          ? CircularProgressIndicator()
+                          : AppButton(
+                              text: 'Register',
+                              fontWeight: FontWeight.bold,
+                              size: 18,
+                              onTap: () {
+                                registration();
+                              }),
+
+                      SizedBox(
+                        height: 5,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                         AppContainer(text: 'Already have an account ?', weight:FontWeight.normal, size: 15, textColor:AppColors.blackColor),
-                         SizedBox(width: 3,),
-                         InkWell(
-                           onTap: (){
-                             Navigator.pushReplacement(context,CupertinoPageRoute(builder: (context)=> Login()));
-
-                           },
-                             
-                             child: AppContainer(text: 'Sign In', weight: FontWeight.normal, size: 15, textColor: AppColors.backgroundColor))
-              
-            
-                        ],),
-                    ],),
-                )],
+                          AppContainer(
+                              text: 'Already have an account ?',
+                              weight: FontWeight.normal,
+                              size: 15,
+                              textColor: AppColors.blackColor),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) => Login()));
+                              },
+                              child: AppContainer(
+                                  text: 'Sign In',
+                                  weight: FontWeight.normal,
+                                  size: 15,
+                                  textColor: AppColors.backgroundColor))
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ],
-
       ),
     );
   }
 }
-
-
-
-

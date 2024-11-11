@@ -9,6 +9,9 @@ class AppImages
   static String Pic3 = '$imagePath/Pic3.png';
   static String Pic4 = '$imagePath/Pic4.png';
   static String Profile = '$imagePath/girl4.jpg';
+  static String Background = '$imagePath/fly.jpg';
+  static String Background1 = '$imagePath/tree.jpg';
+  static String Background2 = '$imagePath/star.jpg';
 
 
 }

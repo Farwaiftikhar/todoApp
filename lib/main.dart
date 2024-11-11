@@ -1,11 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
+//import 'package:first_project/Controller/assets/Components/RowContainer.dart';
 import 'package:first_project/View/Auth-Screen/Login.dart';
 import 'package:first_project/View/Auth-Screen/Registration.dart';
+//import 'package:first_project/View/CheckBox.dart';
 import 'package:first_project/View/HomeScreen/Dashboard.dart';
+import 'package:first_project/View/HomeScreen/DrawerScreen/DrawerScreen.dart';
+import 'package:first_project/View/HomeScreen/HomeScreen.dart';
 import 'package:first_project/View/StartingScreen/SplashScreen.dart';
 import 'package:flutter/material.dart';
 
-void main()  async{
+  void main()  async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -40,8 +44,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: //Dashboard()
+      home: //DrawerScreen()
+      //Dashboard()
       //Login()
+      //HomeScreen()
       //Registration()
       SplashScreen()
     );

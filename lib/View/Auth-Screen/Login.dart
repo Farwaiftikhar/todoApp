@@ -1,10 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_project/Controller/Contstants/Container-Color/Color.dart';
 import 'package:first_project/Controller/assets/Components/App-Button.dart';
 import 'package:first_project/Controller/assets/Components/App-Container.dart';
 import 'package:first_project/Controller/assets/Components/TxtFrmFldCnt.dart';
 import 'package:first_project/Controller/assets/app-images.dart';
+import 'package:first_project/View/Auth-Screen/Registration.dart';
 import 'package:first_project/View/HomeScreen/Dashboard.dart';
+import 'package:first_project/View/HomeScreen/HomeScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,6 +19,58 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+
+  bool isLoading = false;
+  Future<void> Login() async{
+    isLoading = true;
+    setState(() {
+
+    });
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim())
+        .then((value)
+
+    { Get.snackbar(
+       'Create', 'Successful',
+      snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.blue,  // Background color
+        colorText: Colors.green.withOpacity(0.5) ,// Text color
+        duration: Duration(seconds: 5),
+      borderRadius: 10,
+      margin: EdgeInsets.all(10),
+
+
+    );
+      // Successfull Snackbar
+      //print ('Account Created Sucessfully');
+      isLoading = false;
+      setState(() {
+
+      });
+      Navigator.push(context, CupertinoPageRoute(builder: (contex)=>Dashboard()));
+    }).onError((error,value){
+
+      Get.snackbar(
+          'Error', 'Email not Registered',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.blue,  // Background color
+          colorText: Colors.white.withOpacity(0.5) ,// Text color
+          duration: Duration(seconds: 3),
+          borderRadius: 10,
+          margin: EdgeInsets.all(10),);
+
+          isLoading = false;
+      setState(() {
+
+      });
+          //print('Error : $error');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +87,8 @@ class _LoginState extends State<Login> {
                   bottomLeft: Radius.circular(80),
                 )
             ),),
-          Container(
+
+            Container(
             height: 180,
             width: 100,
             decoration: BoxDecoration(
@@ -68,12 +126,12 @@ class _LoginState extends State<Login> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppContainer(text: 'Email', weight: FontWeight.bold, size: 15, textColor: AppColors.blackColor),
-                      FormContainer(hintColor: AppColors.hinttext, fielColor: AppColors.whiteColor, text:'mary.elliot@mail.com'),
+                      FormContainer(hintColor: AppColors.hinttext,  text:'mary.elliot@mail.com', controller:_emailController,),
             
                       SizedBox(height: 10,),
                       
                       AppContainer(text: 'Password', weight: FontWeight.bold, size: 15, textColor: AppColors.blackColor),
-                      FormContainer(hintColor: AppColors.hinttext, fielColor: AppColors.whiteColor, text:'**************'),
+                      FormContainer(hintColor: AppColors.hinttext,  text:'**************', controller: _passwordController,),
                     ], ),),
                 
                 Container(
@@ -84,25 +142,30 @@ class _LoginState extends State<Login> {
             
                 ),
             
-                InkWell(
-                  onTap: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=> Dashboard()));
-            
-                  },
-                    child: AppButton(
-                      height: 50,
-                      width: 350,
-                      text: 'Login',
-                      fontWeight: FontWeight.bold,
-                      size: 18)
-                ),
+              isLoading?CircularProgressIndicator(): AppButton(
+                   text: 'Login',
+                   fontWeight: FontWeight.bold,
+                   size: 18,
+                   onTap: (){
+                     Login();
+                    // Navigator.push(context,MaterialPageRoute(builder: (context)=> Dashboard()));
+                   }),
+
             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppContainer(text: 'Don’t have an account ?', weight: FontWeight.w600, size: 15, textColor: AppColors.blackColor),
-                    AppContainer(text:' Sign Up', weight: FontWeight.w600, size: 15, textColor:AppColors.backgroundColor)
+                    AppContainer(text: 'Don\'t have an account ?', weight: FontWeight.w600, size: 15, textColor: AppColors.blackColor),
+                    InkWell
+                      (
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) =>  Registration()));
+                      },
+                        child: AppContainer(text:' Sign Up', weight: FontWeight.w600, size: 15, textColor:AppColors.backgroundColor))
             
                   ],),],
             ),

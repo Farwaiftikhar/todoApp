@@ -1,9 +1,13 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_project/Controller/Contstants/Container-Color/Color.dart';
 import 'package:first_project/Controller/assets/Components/App-Button.dart';
 import 'package:first_project/Controller/assets/Components/App-Container.dart';
 import 'package:first_project/Controller/assets/app-images.dart';
 import 'package:first_project/View/Auth-Screen/Registration.dart';
+import 'package:first_project/View/HomeScreen/Dashboard.dart';
+import 'package:first_project/View/HomeScreen/HomeScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,7 +18,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
+  isLogedin(){
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user==null)
+      {
+        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context)=>Registration()));
+      }
+    else {
+      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context)=>Dashboard()));
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body:Stack(
@@ -68,17 +82,16 @@ class _SplashScreenState extends State<SplashScreen> {
                               ' Sed posuere gravida purus id eu condimentum est diam quam. '
                               '  Condimentum blandit diam.',
                               weight: FontWeight.bold, size: 18, textColor: (AppColors.blackColor)),),
-                
-                    InkWell(
-                      onTap: ()
-                      {
-                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Registration()));},
-                        child: AppButton(
-                         height: 50,
-                         width: 350,
-                         text: 'Get Started',
-                         fontWeight: FontWeight.bold,
-                         size: 18),),
+
+                    AppButton(
+                        text: 'Get Satrted',
+                        fontWeight: FontWeight.bold,
+                        size: 18,
+                        onTap: (){
+
+                          isLogedin();
+                         // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Registration()));
+                        })
                 
                 
                 

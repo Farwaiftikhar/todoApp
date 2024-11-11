@@ -8,17 +8,25 @@ class AppButton extends StatelessWidget {
   String text;
   FontWeight fontWeight;
   double size;
+  VoidCallback onTap;
    AppButton({super.key,
   //required this.height,
  // required this.width,
   required this.text,
   required this.fontWeight,
   required this.size,
+     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return   InkWell(
+    onTap: onTap,
+
+
+
+      child:
+      Container(
       padding: EdgeInsets.only(left: 10,),
       margin: EdgeInsets.only(top: 80,bottom: 5),
       alignment: Alignment.center,
@@ -30,6 +38,6 @@ class AppButton extends StatelessWidget {
       ),
       child: Text(text,style:TextStyle(color:(AppColors.blackColor),fontSize: size,fontWeight:fontWeight),
       ),
-    );
+      ), );
   }
 }
