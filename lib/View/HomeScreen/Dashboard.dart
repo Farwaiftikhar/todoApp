@@ -32,11 +32,26 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+          onPressed: (){
+            Navigator.push(context, CupertinoDialogRoute(builder: (context)=> InsertData(),
+                context: context));
+          },
+          child: Icon(Icons.add,color:Color(0xff62D2C2)),),
+
+
+      //AppBar
+      appBar: AppBar(
+        backgroundColor:Color(0xff62D2C2).withOpacity(0.5) ,
+      ),
+
+      // drawer Funtion
       drawer: DrawerScreen(),
 
       body: Stack(
         children: [
-        Container(height: 300, width: 450, color: (AppColors.circleColor)),
+        Container(height: 280, width: 450, color: (AppColors.circleColor)),
 
         Container(
           height: 100,
@@ -60,7 +75,7 @@ class _DashboardState extends State<Dashboard> {
         ),
 
         Container(
-          padding: EdgeInsets.only(left: 150, top: 110),
+          padding: EdgeInsets.only(left: 150, top: 90),
           height: 250,
           width: 250,
           child: CircleAvatar(
@@ -70,7 +85,7 @@ class _DashboardState extends State<Dashboard> {
 
 
         Container(
-          padding: EdgeInsets.only(top: 250, left: 130),
+          padding: EdgeInsets.only(top: 230, left: 130),
           height: 400,
           width: 400,
           child: Text(
@@ -83,14 +98,14 @@ class _DashboardState extends State<Dashboard> {
         ),
 
         Container(
-          padding: EdgeInsets.only(left: 10, top: 210),
+          padding: EdgeInsets.only(left: 10, top: 160),
           height: 600,
           width: 400,
           child: Image(image: AssetImage(AppImages.Pic3)),
         ),
 
         Container(
-          padding: EdgeInsets.only(right: 50, top: 490, left: 20),
+          padding: EdgeInsets.only(right: 50, top: 440, left: 20),
           height: 650,
           width: 400,
           child: Text(
@@ -117,19 +132,20 @@ class _DashboardState extends State<Dashboard> {
        * */
 
 
-         Row(
+        /* Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
                 onTap: ()
-                {Navigator.push(context, CupertinoDialogRoute(builder: (context)=> Dashboard(),
+                {Navigator.push(context, CupertinoDialogRoute(builder: (context)=> UpdateScreen(docid: 'id',),
                     context: context));},
                 child: Container(
-                  padding: EdgeInsets.only(top: 540,left: 30),
+                  padding: EdgeInsets.only(top: 510,left: 20),
                   height: 620,
                   width: 150,
                   child:
-                  Text('Daily Tasks',style: TextStyle(color: (AppColors.blackColor),fontSize: 17,fontWeight: FontWeight.bold),),),
+                  Text('Daily Tasks',style: TextStyle(color: (AppColors.blackColor),
+                      fontSize: 17,fontWeight: FontWeight.bold),),),
               ),
 
 
@@ -139,11 +155,13 @@ class _DashboardState extends State<Dashboard> {
                       context: context));
                 },
                 child: Container(
-                  padding: EdgeInsets.only(top: 480,right: 30),
+                  padding: EdgeInsets.only(top: 450,right: 20),
                   child:
                   Icon(Icons.add_circle_outline,color: (AppColors.backgroundColor),),),
               ),
             ],),
+        *
+        * */
 
 
 
@@ -169,35 +187,38 @@ class _DashboardState extends State<Dashboard> {
                   ),],),),
             * */
 
-          StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('Todo').snapshots(),
-            builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
-              final data = snapshot.requireData;
-              return ListView.builder(
-                  itemCount: data.size,
-                  itemBuilder: (context,index){
-                    String docid = data.docs[index]['id'];
-                    return Card(
-                      color: AppColors.circleColor,
-                      child: ListTile(
-                        onLongPress: (){
-                          Navigator.push(context, CupertinoDialogRoute(builder: (context)=> UpdateScreen(docid: docid,), context: context));
-                        },
-                        onTap: ()async{
-                          await FirebaseFirestore.instance.collection('Todo').doc(docid).delete();
-                        },
-                        leading: CircleAvatar(
-                          backgroundColor: (AppColors.whiteColor),
-                          child: Text(docid,style: TextStyle(color: (AppColors.circleColor)),),
+          Padding(
+            padding: EdgeInsets.only(top: 490,left: 20,right: 20),
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('Todo').snapshots(),
+              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+                final data = snapshot.requireData;
+                return ListView.builder(
+                    itemCount: data.size,
+                    itemBuilder: (context,index){
+                      String docid = data.docs[index]['id'];
+                      return Card(
+                        color: AppColors.circleColor,
+                        child: ListTile(
+                          onLongPress: (){
+                            Navigator.push(context, CupertinoDialogRoute(builder: (context)=> UpdateScreen(docid: docid,), context: context));
+                          },
+                          onTap: ()async{
+                            await FirebaseFirestore.instance.collection('Todo').doc(docid).delete();
+                          },
+                          leading: CircleAvatar(
+                            backgroundColor: (AppColors.whiteColor),
+                            child: Text(docid,style: TextStyle(color: (AppColors.circleColor)),),
+                          ),
+                          title: Text(data.docs[index]['description']),
+                          subtitle: Text(data.docs[index]['title']),
+
                         ),
-                        title: Text(data.docs[index]['title']),
-                        subtitle: Text(data.docs[index]['description']),
+                      );
+                    });
+              },
 
-                      ),
-                    );
-                  });
-            },
-
+            ),
           ),
 
 

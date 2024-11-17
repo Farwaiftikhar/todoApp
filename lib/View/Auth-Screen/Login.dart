@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
 
     { Get.snackbar(
        'Create', 'Successful',
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.blue,  // Background color
         colorText: Colors.green.withOpacity(0.5) ,// Text color
         duration: Duration(seconds: 5),
@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
 
       Get.snackbar(
           'Error', 'Email not Registered',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.blue,  // Background color
           colorText: Colors.white.withOpacity(0.5) ,// Text color
           duration: Duration(seconds: 3),

@@ -31,7 +31,7 @@ class _RegistrationState extends State<Registration> {
             password: _passwordController.text.trim())
         .then((value) {
       // Successfull Snackbar
-      print('Account Created Sucessfully');
+      print('Account Created Successfully');
 
       isLoading = false;
       setState(() {});
