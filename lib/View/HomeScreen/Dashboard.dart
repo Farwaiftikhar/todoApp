@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_project/Controller/Contstants/Container-Color/Color.dart';
 import 'package:first_project/Controller/assets/app-images.dart';
 import 'package:first_project/View/HomeScreen/HomeScreen.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'DrawerScreen/DrawerScreen.dart';
+import 'UpdateScreen/UpdateScreen.dart';
 
 
 class Dashboard extends StatefulWidget {
@@ -16,15 +18,16 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<String> _checkboxItems = [
+  /*List<String> _checkboxItems = [
     'Learn programming by 12am',
     'Learn how to cook by 1pm',
     'Pick up the kids by 2pm',
     'Have lunch at 3pm',
     'Go visit mum by 4pm',
   ];
+  * */
 
-  List<bool> _checkboxValue = List.filled(5, false);
+ // List<bool> _checkboxValue = List.filled(5, false);
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +103,7 @@ class _DashboardState extends State<Dashboard> {
         ),
 
         //Daily_Task Container Start
-        Padding(
+       /* Padding(
           padding: EdgeInsets.only(top: 530, left: 15, right: 15, bottom: 20),
             child: Container(
                alignment: Alignment.bottomCenter,
@@ -111,6 +114,7 @@ class _DashboardState extends State<Dashboard> {
                 borderRadius: BorderRadius.circular(10),
                 color: (AppColors.whiteColor),),),),
 
+       * */
 
 
          Row(
@@ -118,7 +122,7 @@ class _DashboardState extends State<Dashboard> {
             children: [
               InkWell(
                 onTap: ()
-                {Navigator.push(context, CupertinoDialogRoute(builder: (context)=> HomeScreen(),
+                {Navigator.push(context, CupertinoDialogRoute(builder: (context)=> Dashboard(),
                     context: context));},
                 child: Container(
                   padding: EdgeInsets.only(top: 540,left: 30),
@@ -143,8 +147,7 @@ class _DashboardState extends State<Dashboard> {
 
 
 
-
-
+            /*
         Padding(
             padding: EdgeInsets.only(top:570,left: 30),
             child: Column(
@@ -163,13 +166,39 @@ class _DashboardState extends State<Dashboard> {
                     activeColor: (AppColors.circleColor),
                     controlAffinity:ListTileControlAffinity.leading,
                     //tristate: true,
-                  ),
+                  ),],),),
+            * */
 
+          StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('Todo').snapshots(),
+            builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+              final data = snapshot.requireData;
+              return ListView.builder(
+                  itemCount: data.size,
+                  itemBuilder: (context,index){
+                    String docid = data.docs[index]['id'];
+                    return Card(
+                      color: AppColors.circleColor,
+                      child: ListTile(
+                        onLongPress: (){
+                          Navigator.push(context, CupertinoDialogRoute(builder: (context)=> UpdateScreen(docid: docid,), context: context));
+                        },
+                        onTap: ()async{
+                          await FirebaseFirestore.instance.collection('Todo').doc(docid).delete();
+                        },
+                        leading: CircleAvatar(
+                          backgroundColor: (AppColors.whiteColor),
+                          child: Text(docid,style: TextStyle(color: (AppColors.circleColor)),),
+                        ),
+                        title: Text(data.docs[index]['title']),
+                        subtitle: Text(data.docs[index]['description']),
 
-              ],
-            ),
+                      ),
+                    );
+                  });
+            },
+
           ),
-
 
 
 
