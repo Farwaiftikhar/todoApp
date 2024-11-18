@@ -24,6 +24,8 @@ class _LoginState extends State<Login> {
 
 
   bool isLoading = false;
+   //final String title;
+
   Future<void> Login() async{
     isLoading = true;
     setState(() {
@@ -35,9 +37,9 @@ class _LoginState extends State<Login> {
         .then((value)
 
     { Get.snackbar(
-       'Create', 'Successful',
+       'Good',  'Created  Successful',
       snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.blue,  // Background color
+        backgroundColor: Colors.greenAccent,  // Background color
         colorText: Colors.green.withOpacity(0.5) ,// Text color
         duration: Duration(seconds: 5),
       borderRadius: 10,
@@ -47,7 +49,7 @@ class _LoginState extends State<Login> {
     );
       // Successfull Snackbar
       //print ('Account Created Sucessfully');
-      isLoading = false;
+    isLoading = false;
       setState(() {
 
       });
@@ -57,7 +59,7 @@ class _LoginState extends State<Login> {
       Get.snackbar(
           'Error', 'Email not Registered',
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.blue,  // Background color
+          backgroundColor: Colors.orangeAccent,  // Background color
           colorText: Colors.white.withOpacity(0.5) ,// Text color
           duration: Duration(seconds: 3),
           borderRadius: 10,
