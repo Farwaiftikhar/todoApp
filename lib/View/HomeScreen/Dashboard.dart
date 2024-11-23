@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_project/Controller/Contstants/Container-Color/Color.dart';
 import 'package:first_project/Controller/assets/app-images.dart';
-import 'package:first_project/View/HomeScreen/HomeScreen.dart';
+//import 'package:first_project/View/HomeScreen/HomeScreen.dart';
 import 'package:first_project/View/HomeScreen/InsertData/InsertData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -191,38 +191,44 @@ class _DashboardState extends State<Dashboard> {
             padding: EdgeInsets.only(top: 490,left: 20,right: 20),
             child: StreamBuilder(
               stream: FirebaseFirestore.instance.collection('Todo').snapshots(),
-              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
-    {
-    if(snapshot.connectionState==ConnectionState.waiting){
-    return Center(child: SpinKitDualRing(color: Colors.black),);
-    }
-                final data = snapshot.requireData;
-                return ListView.builder(
-                    itemCount: data.size,
-                    itemBuilder: (context,index){
-                      String docid = data.docs[index]['id'];
-                      return Card(
-                        color: AppColors.circleColor,
-                        child: ListTile(
-                          onLongPress: (){
-                            Navigator.push(context, CupertinoDialogRoute(builder: (context)=> UpdateScreen(docid: docid,), context: context));
-                          },
-                          onTap: ()async{
-                            await FirebaseFirestore.instance.collection('Todo').doc(docid).delete();
-                          },
-                          leading: CircleAvatar(
-                            backgroundColor: (AppColors.whiteColor),
-                            child: Text(docid,style: TextStyle(color: (AppColors.circleColor)),),
+              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
+                {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  final data = snapshot.requireData;
+                  return ListView.builder(
+                      itemCount: data.size,
+                      itemBuilder: (context, index) {
+                        String docid = data.docs[index]['id'];
+                        return Card(
+                          color: AppColors.circleColor,
+                          child: ListTile(
+                            onLongPress: () {
+                              Navigator.push(context, CupertinoDialogRoute(
+                                  builder: (context) =>
+                                      UpdateScreen(docid: docid,),
+                                  context: context));
+                            },
+                            onTap: () async {
+                              await FirebaseFirestore.instance.collection(
+                                  'Todo').doc(docid).delete();
+                            },
+                            leading: CircleAvatar(
+                              backgroundColor: (AppColors.whiteColor),
+                              child: Text(docid, style: TextStyle(
+                                  color: (AppColors.circleColor)),),
+                            ),
+                            title: Text(data.docs[index]['description']),
+                            subtitle: Text(data.docs[index]['title']),
+
                           ),
-                          title: Text(data.docs[index]['description']),
-                          subtitle: Text(data.docs[index]['title']),
+                        );
+                      });
+                }
 
-                        ),
-                      );
-                    });
-              },
 
-            ),
+              } ),
           ),
 
 

@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_project/Controller/Contstants/Container-Color/Color.dart';
 import 'package:first_project/Controller/assets/Components/App-Button.dart';
@@ -6,7 +7,6 @@ import 'package:first_project/Controller/assets/Components/TxtFrmFldCnt.dart';
 import 'package:first_project/Controller/assets/app-images.dart';
 import 'package:first_project/View/Auth-Screen/Registration.dart';
 import 'package:first_project/View/HomeScreen/Dashboard.dart';
-import 'package:first_project/View/HomeScreen/HomeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,51 +26,53 @@ class _LoginState extends State<Login> {
   //final String title;
 
   Future<void> Login() async {
-    isLoading = true;
-    //setState(() {});
+
+    setState(() {
+      isLoading = true;
+    });
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim())
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim())
         .then((value) {
-          isLoading = false;
-          setState(() {
 
-          });
+      setState(() {
+        isLoading = false;
+      });
       Get.snackbar(
-        'Good', 'Created  Successful',
+        'Account', 'Login  Successful',
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.greenAccent, // Background color
-        colorText: Colors.green.withOpacity(0.5), // Text color
-        duration: Duration(seconds: 5),
+        backgroundColor: Colors.blueAccent.withOpacity(0.3), // Background color
+        colorText: Colors.black, // Text color
+        duration: Duration(seconds: 4),
         borderRadius: 10,
+        icon: Icon(Icons.account_balance,color: Colors.black,),
         margin: EdgeInsets.all(10),
       );
       // Successfull Snackbar
-      //print ('Account Created Sucessfully');
+      print ('Account Created Sucessfully');
       //isLoading = false;
       //setState(() {});
-      Navigator.push(
-          context, CupertinoPageRoute(builder: (contex) => Dashboard()));
+      Get.to(() => Dashboard());
     }).onError((error, handleError) {
-      isLoading = false;
-      setState(() {
 
+      setState(() {
+        isLoading = false;
       });
       //print("------------------------1");
       Get.snackbar(
-        'Error', 'Email not Registered',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.orangeAccent, // Background color
-        colorText: Colors.white.withOpacity(0.5), // Text color
-        duration: Duration(seconds: 3),
-        borderRadius: 10,
-        margin: EdgeInsets.all(10),
-        icon: Icon(Icons.error,
-        color: Colors.orangeAccent,
-        ));
+          'Error', 'Email not Registered',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.blueGrey.withOpacity(0.3), // Background color
+          colorText: Colors.blue, // Text color
+          duration: Duration(seconds: 3),
+          borderRadius: 10,
+          margin: EdgeInsets.all(10),
+          icon: Icon(Icons.nearby_error,
+            color: Colors.pink,
+          ));
 
-     // isLoading = false;
+      // isLoading = false;
       //setState(() {});
       //print('Error : $error');
     });
@@ -170,13 +172,13 @@ class _LoginState extends State<Login> {
                 isLoading
                     ? CircularProgressIndicator()
                     : AppButton(
-                        text: 'Login',
-                        fontWeight: FontWeight.bold,
-                        size: 18,
-                        onTap: () {
-                          Login();
-                          // Navigator.push(context,MaterialPageRoute(builder: (context)=> Dashboard()));
-                        }),
+                    text: 'Login',
+                    fontWeight: FontWeight.bold,
+                    size: 18,
+                    onTap: () {
+                      Login();
+                      // Navigator.push(context,MaterialPageRoute(builder: (context)=> Dashboard()));
+                    }),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -207,5 +209,4 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
-  }
-}
+  }}

@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:first_project/Controller/Contstants/Container-Color/Color.dart';
 import 'package:first_project/Controller/assets/Components/App-Button.dart';
 import 'package:first_project/Controller/assets/Components/App-Container.dart';
@@ -19,45 +19,54 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-   TextEditingController _nameController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmController = TextEditingController();
-
   bool isLoading = false;
+
   Future<void> registration() async {
     isLoading = true;
     setState(() {});
+
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim())
         .then((value) {
       // Successfull Snackbar
-      print('Account Created Successfully');
+     // print('Account Created Successfully');
 
       isLoading = false;
       setState(() {});
       Get.snackbar('Congratulations', 'Your account successfully created',
-          backgroundColor:Colors.white.withOpacity(.5) ,
+          backgroundColor: Colors.blueGrey.withOpacity(.5),
           snackPosition: SnackPosition.TOP,
-          duration: Duration(seconds: 1),
-          icon: Icon(Icons.thumb_up,color: Colors.green,)
+          duration: Duration(seconds: 3),
+          icon: Icon(
+            Icons.thumb_up,
+            color: Colors.green,
+          ));
 
-      );
-
-
-
-
-
-
-
-
-      Navigator.push(context, CupertinoPageRoute(builder: (contex) => Login()));
+      Get.to(() => Login());
+     // Get.to(() => Login()));
     }).onError((error, value) {
       isLoading = false;
       setState(() {});
-      print('Error : $error');
+
+      Get.snackbar(
+          'Error', 'Email not Registered',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.blueGrey.withOpacity(0.4), // Background color
+          colorText: Colors.teal, // Text color
+          duration: Duration(seconds: 3),
+          borderRadius: 10,
+          margin: EdgeInsets.all(10),
+          icon: Icon(Icons.nearby_error,
+            color: Colors.lightGreen,
+          ));
+
+     // print('Error : $error');
     });
   }
 
@@ -118,27 +127,31 @@ class _RegistrationState extends State<Registration> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       AppContainer(text: 'Full Name', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                       FormContainer(hintColor:AppColors.hinttext, text:'Mary Elliot', controller: _nameController,),
-
+                      AppContainer(
+                          text: 'Full Name',
+                          weight: FontWeight.bold,
+                          size: 15,
+                          textColor: AppColors.blackColor),
+                      FormContainer(
+                        hintColor: AppColors.hinttext,
+                        text: 'Mary Elliot',
+                        controller: _nameController,
+                      ),
                       SizedBox(
                         height: 10,
                       ),
-
                       AppContainer(
                           text: 'Email',
                           weight: FontWeight.bold,
                           size: 15,
                           textColor: AppColors.blackColor),
-                   FormContainer(
-                       hintColor: AppColors.hinttext,
-                       text: 'mary.elliot@mail.com',
-                       controller: _emailController),
-
+                      FormContainer(
+                          hintColor: AppColors.hinttext,
+                          text: 'mary.elliot@mail.com',
+                          controller: _emailController),
                       SizedBox(
                         height: 10,
                       ),
-
                       AppContainer(
                           text: 'Password',
                           weight: FontWeight.bold,
@@ -149,16 +162,22 @@ class _RegistrationState extends State<Registration> {
                         text: '**************',
                         controller: _passwordController,
                       ),
-
-                       SizedBox(height: 10,),
-
-                      AppContainer(text: 'Confirm Password', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                      FormContainer(hintColor:AppColors.hinttext, text:'**************', controller: _confirmController, ),
-
+                      SizedBox(
+                        height: 10,
+                      ),
+                      AppContainer(
+                          text: 'Confirm Password',
+                          weight: FontWeight.bold,
+                          size: 15,
+                          textColor: AppColors.blackColor),
+                      FormContainer(
+                        hintColor: AppColors.hinttext,
+                        text: '**************',
+                        controller: _confirmController,
+                      ),
                       SizedBox(
                         height: 5,
                       ),
-
                       isLoading
                           ? CircularProgressIndicator()
                           : AppButton(
@@ -168,7 +187,6 @@ class _RegistrationState extends State<Registration> {
                               onTap: () {
                                 registration();
                               }),
-
                       SizedBox(
                         height: 5,
                       ),
