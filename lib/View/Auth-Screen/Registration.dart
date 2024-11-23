@@ -40,7 +40,7 @@ class _RegistrationState extends State<Registration> {
       isLoading = false;
       setState(() {});
       Get.snackbar('Congratulations', 'Your account successfully created',
-          backgroundColor: Colors.blueGrey.withOpacity(.5),
+          backgroundColor: Colors.white.withOpacity(0.5),
           snackPosition: SnackPosition.TOP,
           duration: Duration(seconds: 3),
           icon: Icon(
@@ -57,7 +57,7 @@ class _RegistrationState extends State<Registration> {
       Get.snackbar(
           'Error', 'Email not Registered',
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.blueGrey.withOpacity(0.4), // Background color
+          backgroundColor: Colors.white.withOpacity(0.4), // Background color
           colorText: Colors.teal, // Text color
           duration: Duration(seconds: 3),
           borderRadius: 10,
