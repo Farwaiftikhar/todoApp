@@ -192,6 +192,10 @@ class _DashboardState extends State<Dashboard> {
             child: StreamBuilder(
               stream: FirebaseFirestore.instance.collection('Todo').snapshots(),
               builder: (context,AsyncSnapshot<QuerySnapshot> snapshot){
+    {
+    if(snapshot.connectionState==ConnectionState.waiting){
+    return Center(child: SpinKitDualRing(color: Colors.black),);
+    }
                 final data = snapshot.requireData;
                 return ListView.builder(
                     itemCount: data.size,

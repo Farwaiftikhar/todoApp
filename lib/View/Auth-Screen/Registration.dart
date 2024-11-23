@@ -7,6 +7,9 @@ import 'package:first_project/Controller/assets/Components/TxtFrmFldCnt.dart';
 import 'package:first_project/View/Auth-Screen/Login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 
 class Registration extends StatefulWidget {
   const Registration({super.key});
@@ -16,10 +19,10 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  // TextEditingController _nameController = TextEditingController();
+   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  //TextEditingController _confirmController = TextEditingController();
+  TextEditingController _confirmController = TextEditingController();
 
   bool isLoading = false;
   Future<void> registration() async {
@@ -35,6 +38,21 @@ class _RegistrationState extends State<Registration> {
 
       isLoading = false;
       setState(() {});
+      Get.snackbar('Congratulations', 'Your account successfully created',
+          backgroundColor:Colors.white.withOpacity(.5) ,
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 1),
+          icon: Icon(Icons.thumb_up,color: Colors.green,)
+
+      );
+
+
+
+
+
+
+
+
       Navigator.push(context, CupertinoPageRoute(builder: (contex) => Login()));
     }).onError((error, value) {
       isLoading = false;
@@ -100,8 +118,8 @@ class _RegistrationState extends State<Registration> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // AppContainer(text: 'Full Name', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                      // FormContainer(hintColor:AppColors.hinttext, fieldColor: AppColors.whiteColor, text:'Mary Elliot', controller: _nameController,),
+                       AppContainer(text: 'Full Name', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
+                       FormContainer(hintColor:AppColors.hinttext, text:'Mary Elliot', controller: _nameController,),
 
                       SizedBox(
                         height: 10,
@@ -132,10 +150,10 @@ class _RegistrationState extends State<Registration> {
                         controller: _passwordController,
                       ),
 
-                      // SizedBox(height: 10,),
+                       SizedBox(height: 10,),
 
-                      //AppContainer(text: 'Confirm Password', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
-                      //FormContainer(hintColor:AppColors.hinttext, fieldColor: AppColors.whiteColor, text:'**************', controller: _confirmController, ),
+                      AppContainer(text: 'Confirm Password', weight: FontWeight.bold, size: 15, textColor:AppColors.blackColor),
+                      FormContainer(hintColor:AppColors.hinttext, text:'**************', controller: _confirmController, ),
 
                       SizedBox(
                         height: 5,
